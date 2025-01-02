@@ -1,47 +1,76 @@
 .roboto-regular {
-    font-family: "Roboto", serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  .roboto-medium {
-    font-family: "Roboto", serif;
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  .roboto-bold {
-    font-family: "Roboto", serif;
-    font-weight: 700;
-    font-style: normal;
-  }
+  font-family: "Roboto", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-medium {
+  font-family: "Roboto", serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.roboto-bold {
+  font-family: "Roboto", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+:root {
+  --primary-bg-color: #292929;
+  --secondary-bg-color: #1d1d1d;
+  --primary-text-color: #e1e1e1;
+
+  --primary-button-bg-color: #2196f3;
+  --secondary-button-bg-color: #9C27B0;
+  --disabled-button-bg-color: #607D8B;
+  --primary-button-text-color: #ffffff;
+  --disabled-button-text-color: rgba(255, 255, 255, 0.5);
+
+  --positive-text-color: #4CAF50;
+  --negative-text-color: #F44336;
+}
 
 * {
-    background-color: #292929;
-    color: #e1e1e1;
-    margin: 1% 10% 1% 10%;
-    font-family: Roboto;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  margin: 1% 10% 1% 10%;
+  font-family: Roboto;
 }
 
 div.box {
-    background-color: #1d1d1d;
-    border: 1px solid #1d1d1d;
-    border-radius: 8px;
-    padding: 12px;
-    margin: 8px;
-    text-align: center;
+  background-color: var(--secondary-bg-color);
+  border: 1px solid var(--secondary-bg-color);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px;
+  text-align: center;
 }
 
 h1, h3 {
-    background-color: transparent;
+  background-color: transparent;
+}
+
+h3[positive="true"] {
+  color: var(--positive-text-color);
+}
+h3[positive="false"] {
+  color: var(--negative-text-color);
 }
 
 button {
-    background-color: #2196F3;
-    color: #FFFFFF;
-    border: 1px solid #1d1d1d;
-    border-radius: 8px;
-    padding: 8px 16px 8px 16px;
-    width: 150px;
-    text-transform: uppercase;
+  background-color: var(--primary-button-bg-color);
+  color: var(--primary-button-text-color);
+  border: 1px solid var(--secondary-bg-color);
+  border-radius: 8px;
+  padding: 8px 16px 8px 16px;
+  width: 150px;
+  text-transform: uppercase;
+}
+button[selected="true"] {
+  background-color: var(--secondary-button-bg-color);
+}
+button:disabled {
+  background-color: var(--disabled-button-bg-color);
+  color: var(--disabled-button-text-color);
 }

@@ -1,49 +1,73 @@
 var espDict;
 var engDict;
-var selection = -1;
-var lastButton;
+
+var firstSelectionId = -1;
+var lastButton = null;
 var x = 0;
 var positiveCounter = 0;
-const buttonColor = "#2196F3";
-const buttonDisabled = "#607D8B";
-const buttonSelected = "#9C27B0";
 
+const buttonCount = 10;
 const positiveList = ["Great job! 🌟", "Well done! 👍", "Fantastic work! 🎉", "You're on fire! 🔥", "Amazing! 💥", "Perfect! ✅", "Bravo! 👏", "Excellent! 🎉🎉", "You're a pro! 🏅", "Outstanding! 🌈", "¡Buen trabajo! 👏", "¡Increíble! 🌟", "¡Fantástico! 🎉"];
 const negativeList = ["Almost there! Keep going! 💪", "Not quite, but you're close! 🔍", "You're on the right track! Try again. ✨", "So close! A little more effort! 💡", "Good try! Let’s keep working on it! 🌱", "Almost perfect! You can do it! 🌟", "Nice attempt! Don’t give up! 💪", "Almost, just a little tweak! 🔧", "Close, but not quite. Try again! 🔄", "Great effort, but it needs a little adjustment! 🛠️", "¡Casi! ¡Sigue intentándolo! 💪", "¡Muy cerca! Un poco más y lo consigues! 🔍", "¡Buen intento! ¡Ánimo! 🌱"];
 
-function findOut(id) {
-    setSelected(id);
-    validate(id);
+function buttonClicked(button) {
+    setSelected(button);
+    validate(button);
 }
 
-function validate(id) {
-    const button = document.getElementById(id);
+function validate(button) {
     const text = button.textContent;
+    const leftSide = (button.id % 2 != 0);
+    var secondSelectionId = -1;
 
-    var translation = -1;
+    if (leftSide && (lastButton && lastButton.id % 2 != 0)
+        || !leftSide && (lastButton && lastButton.id % 2 == 0)) {
+        // when user clicks one side two times, reset validation
+        firstSelectionId = -1;
+        lastButton = null;
+    }
 
-    if (selection == -1) {
+    // first selection
+    if (firstSelectionId == -1) {
         lastButton = button;
-        for (var i = 0; i < espDict.length; i++) {
-            if (text == espDict[i])
-                selection = i;
+
+        if (leftSide) {
+            for (var i = 0; i < espDict.length; i++) {
+                if (text.trim().localeCompare(espDict[i].trim()) == 0)
+                    firstSelectionId = i;
+            }
+        }
+        else {
+            for (var i = 0; i < engDict.length; i++) {
+                if (text.trim().localeCompare(engDict[i].trim()) == 0)
+                    firstSelectionId = i;
+            }
         }
         return;
     }
 
-    for (var i = 0; i < engDict.length; i++) {
-        if (text.trim().localeCompare(engDict[i].trim()) == 0)
-            translation = i;
+    // second selection
+    if (leftSide) {
+        for (var i = 0; i < espDict.length; i++) {
+            if (text.trim().localeCompare(espDict[i].trim()) == 0)
+                secondSelectionId = i;
+        }
     }
+    else {
+        for (var i = 0; i < engDict.length; i++) {
+            if (text.trim().localeCompare(engDict[i].trim()) == 0)
+                secondSelectionId = i;
+        }
+    }
+
     unselectAll();
 
-    if (selection == translation)
+    if (firstSelectionId == secondSelectionId)
         positiveAnswer(button);
-    else 
+    else
         negativeAnswer();
 
-
-    selection = -1;
+    firstSelectionId = -1;
     lastButton = null;
 }
 
@@ -51,15 +75,11 @@ function positiveAnswer(button) {
     const randomIndex = Math.floor(Math.random() * positiveList.length);
     const message = document.getElementById("message");
 
-    message.textContent=positiveList[randomIndex];
-    message.style.color='#4CAF50';
+    message.textContent = positiveList[randomIndex];
+    message.setAttribute("positive", true);
 
-    button.disabled=true;
-    button.style.background=buttonDisabled;
-    button.style.opacity=0.5;
-    lastButton.disabled=true;
-    lastButton.style.background=buttonDisabled;
-    lastButton.style.opacity=0.5;
+    button.disabled = true;
+    lastButton.disabled = true;
 
     positiveCounter++;
 
@@ -72,82 +92,63 @@ function positiveAnswer(button) {
 }
 function negativeAnswer() {
     const randomIndex = Math.floor(Math.random() * negativeList.length);
-
-    message.textContent=negativeList[randomIndex];
-    message.style.color='#F44336';
+    message.textContent = negativeList[randomIndex];
+    message.setAttribute("positive", false);
 }
 
 function resetButtons() {
-    for (var i = 0; i < 5; i++) {
-        const leftButton = document.getElementById("left" + i);
-        const rightButton = document.getElementById("right" + i);
-        
-        leftButton.disabled=false;
-        leftButton.style.background=buttonColor;
-        leftButton.style.opacity=1;
-
-        rightButton.disabled=false;
-        rightButton.style.background=buttonColor;
-        rightButton.style.opacity=1;
+    for (var i = 1; i <= 10; i++) {
+        const button = document.getElementById(i);
+        button.disabled = false;
     }
 }
 
 function unselectAll() {
-    for (var i = 0; i < 5; i++) {
-        const leftButton = document.getElementById("left" + i);
-        const rightButton = document.getElementById("right" + i);
-        leftButton.setAttribute("selected", false);
-        rightButton.setAttribute("selected", false);
-        if (!leftButton.disabled)
-            leftButton.style.background=buttonColor;
-        if (!rightButton.disabled)
-            rightButton.style.background=buttonColor;
+    for (var i = 1; i <= buttonCount; i++) {
+        const button = document.getElementById(i);
+        button.setAttribute("selected", false);
     }
 }
 
-function unselectOther(id) {
-    const side = id.slice(0, -1);
-    const currentId = id.slice(-1);
-    for (var i = 0; i < 5; i++) {
+function unselectOther(button) {
+    const currentId = button.id;
+    const leftSide = (currentId % 2 != 0);
+
+    for (var i = (leftSide ? 1 : 2); i <= buttonCount; i += 2) {
         if (i == currentId)
             continue;
 
-        const button = document.getElementById(side + i);
-        button.setAttribute("selected", "false");
-        if (!button.disabled)
-            button.style.background=buttonColor;
+        const buttonToUnselect = document.getElementById(i);
+        buttonToUnselect.setAttribute("selected", false);
     }
 }
 
-function setSelected(id) {
-    const button = document.getElementById(id);
-    const selectedAttribute = button.getAttribute("selected");
+function setSelected(button) {
+    const isSelected = button.getAttribute("selected");
 
-    if (selectedAttribute == "true") { // bez mozliwosci odznaczania
-        // button.setAttribute("selected", "false");
-        // button.style.background=buttonColor;
+    if (isSelected == "true") {
+        button.setAttribute("selected", false);
     }
     else {
-        button.setAttribute("selected", "true");
-        button.style.background=buttonSelected;
+        button.setAttribute("selected", true);
     }
 
-    unselectOther(id);
+    unselectOther(button);
 }
 
 function shuffle(array) {
     let currentIndex = array.length;
-  
+
     // While there remain elements to shuffle...
     while (currentIndex != 0) {
-  
-      // Pick a remaining element...
-      let randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
+
+        // Pick a remaining element...
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
     }
 }
 
@@ -156,12 +157,12 @@ function setDictionaries(esp, eng) {
     engDict = eng;
     prepareButtons();
 }
-  
+
 function prepareButtons() {
     var espDictToShow = new Array();
     var engDictToShow = new Array();
 
-    for (var i = x; i < x+5; i++) {
+    for (var i = x; i < x + 5; i++) {
         espDictToShow.push(espDict[i]);
         engDictToShow.push(engDict[i]);
     }
@@ -171,8 +172,15 @@ function prepareButtons() {
     shuffle(shuffledEsp);
     shuffle(shuffledEng);
 
-    for (var i = 0; i < shuffledEsp.length; i++) {
-        document.querySelector('#left' + i).innerText = shuffledEsp[i];
-        document.querySelector('#right' + i).innerText = shuffledEng[i];
+    var j = 0;
+    for (var i = 1; i <= buttonCount; i++) {
+        const leftSide = (i % 2 != 0);
+        if (leftSide) {
+            document.getElementById(i).innerText = shuffledEsp[j];
+        }
+        else {
+            document.getElementById(i).innerText = shuffledEng[j];
+            j++;
+        }
     }
 }
