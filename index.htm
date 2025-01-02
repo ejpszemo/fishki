@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Fishki by ejpszemo</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="scripts.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="box">
+            <h1>Fishki</h1>
+        </div>
+
+        <div class="box">
+            <input type="file" id="fileinput" />
+        </div>
+
+        <script type="text/javascript">
+            function readSingleFile(evt) {
+            //Retrieve the first (and only!) File from the FileList object
+                var f = evt.target.files[0]; 
+                var esp_words = new Array();
+                var eng_words = new Array();
+
+                if (!f)
+                    alert("Failed to load file");
+    
+                var r = new FileReader();
+                r.onload = function(e) { 
+                    var contents = e.target.result;
+                    // document.getElementById('area').value = contents;
+                
+                    var lines = contents.split('\n');
+
+                    for (var line = 0; line < lines.length; line++) {
+                        var word = lines[line].split('-');
+                        esp_words.push(word[0]);
+                        eng_words.push(word[1]);
+                    }
+
+                    setDictionaries(esp_words, eng_words);
+                }
+            r.readAsText(f);
+          }
+    
+          document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+        </script>
+
+        <!-- <div class="box">
+            <textarea rows=5 id="area"></textarea>
+        </div> -->
+        
+        <div class="box">
+            <button type="button" id="left0" onclick="findOut(id)">-</button>
+            <button type="button" id="right0" onclick="findOut(id)">-</button>
+            <br />
+
+            <button type="button" id="left1" onclick="findOut(id)">-</button>
+            <button type="button" id="right1" onclick="findOut(id)">-</button>
+            <br />
+
+            <button type="button" id="left2" onclick="findOut(id)">-</button>
+            <button type="button" id="right2" onclick="findOut(id)">-</button>
+            <br />
+
+            <button type="button" id="left3" onclick="findOut(id)">-</button>
+            <button type="button" id="right3" onclick="findOut(id)">-</button>
+            <br />
+
+            <button type="button" id="left4" onclick="findOut(id)">-</button>
+            <button type="button" id="right4" onclick="findOut(id)">-</button>
+            <br />
+        </div>
+
+        <div class="box">
+            <h3 id="message">
+                Match two words together!
+            </h3>
+        </div>
+    </body>
+</html>
