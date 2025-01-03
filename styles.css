@@ -54,7 +54,7 @@ div.box {
   text-align: center;
 }
 
-h1, h3 {
+h1, h3, p {
   background-color: transparent;
 }
 
@@ -63,6 +63,11 @@ h3[positive="true"] {
 }
 h3[positive="false"] {
   color: var(--negative-text-color);
+}
+p {
+  font-size: small;
+  color: var(--primary-text-color);
+  font-weight: 700;
 }
 
 button {

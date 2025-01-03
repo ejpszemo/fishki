@@ -5,6 +5,7 @@ var firstSelectionId = -1;
 var lastButton = null;
 var x = 0;
 var positiveCounter = 0;
+var comboCounter = 0;
 
 const buttonCount = 10;
 const positiveList = ["Great job! 🌟", "Well done! 👍", "Fantastic work! 🎉", "You're on fire! 🔥", "Amazing! 💥", "Perfect! ✅", "Bravo! 👏", "Excellent! 🎉🎉", "You're a pro! 🏅", "Outstanding! 🌈", "¡Buen trabajo! 👏", "¡Increíble! 🌟", "¡Fantástico! 🎉"];
@@ -74,9 +75,13 @@ function validate(button) {
 function positiveAnswer(button) {
     const randomIndex = Math.floor(Math.random() * positiveList.length);
     const message = document.getElementById("message");
+    const combo = document.getElementById("combo");
 
     message.textContent = positiveList[randomIndex];
     message.setAttribute("positive", true);
+
+    comboCounter++;
+    combo.textContent = "Combo " + comboCounter + "!";
 
     button.disabled = true;
     lastButton.disabled = true;
@@ -94,6 +99,9 @@ function negativeAnswer() {
     const randomIndex = Math.floor(Math.random() * negativeList.length);
     message.textContent = negativeList[randomIndex];
     message.setAttribute("positive", false);
+
+    comboCounter = 0;
+    combo.textContent = "Combo " + comboCounter + "!";
 }
 
 function resetButtons() {
