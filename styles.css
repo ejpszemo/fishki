@@ -49,14 +49,14 @@ div.box {
   background-color: var(--secondary-bg-color);
   border: 1px solid var(--secondary-bg-color);
   border-radius: 8px;
-  padding: 12px;
+  padding: 8px;
   margin: 8px;
   text-align: center;
 }
 div.box#container {
   padding: 0;
 }
-div.box#left, div.box#right {
+div.box#horizontal{
   display: inline-block;
   width: 30%;
 }

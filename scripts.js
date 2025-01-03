@@ -97,7 +97,6 @@ function positiveAnswer(button) {
         positiveCounter = 0;
         x += (buttonCount / 2);
         prepareButtons();
-        resetButtons();
     }
 }
 function negativeAnswer() {
@@ -199,6 +198,8 @@ function prepareButtons() {
     let shuffledEng = engDictToShow.slice();
     shuffle(shuffledEsp);
     shuffle(shuffledEng);
+
+    resetButtons();
 
     var j = 0;
     for (var i = 1; i <= buttonCount; i++) {
