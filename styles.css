@@ -23,9 +23,16 @@
 
   --primary-button-bg-color: #2196f3;
   --secondary-button-bg-color: #9C27B0;
-  --disabled-button-bg-color: #607D8B;
+  --primary-disabled-button-bg-color: #607D8B;
+  --secondary-disabled-button-bg-color: #455A64;
+  --primary-border-button-color: #1976d2;
+  --secondary-border-button-color: #7B1FA2;
   --primary-button-text-color: #ffffff;
   --disabled-button-text-color: rgba(255, 255, 255, 0.5);
+  --primary-box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+  --primary-hover-box-shadow: 0 6px 12px rgba(25, 118, 210, 0.4);
+  --secondary-box-shadow: 0 4px 8px rgba(123, 31, 162, 0.3);
+  --secondary-hover-box-shadow: 0 6px 12px rgba(123, 31, 162, 0.4);
 
   --positive-text-color: #4CAF50;
   --negative-text-color: #F44336;
@@ -60,17 +67,36 @@ h3[positive="false"] {
 
 button {
   background-color: var(--primary-button-bg-color);
+  box-shadow: var(--primary-box-shadow);
   color: var(--primary-button-text-color);
-  border: 1px solid var(--secondary-bg-color);
+  border: 2px solid var(--primary-border-button-color);
   border-radius: 8px;
   padding: 8px 16px 8px 16px;
   width: 150px;
   text-transform: uppercase;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--primary-hover-box-shadow);
 }
 button[selected="true"] {
   background-color: var(--secondary-button-bg-color);
+  border: 2px solid var(--secondary-border-button-color);
+  box-shadow: var(--secondary-box-shadow);
+}
+button[selected="true"]:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--secondary-hover-box-shadow);
 }
 button:disabled {
-  background-color: var(--disabled-button-bg-color);
+  background-color: var(--primary-disabled-button-bg-color);
+  border: 2px solid var(--secondary-disabled-button-bg-color);
+  box-shadow: none;
   color: var(--disabled-button-text-color);
+}
+button:disabled:hover {
+  transform: none;
+  cursor: auto;
 }
