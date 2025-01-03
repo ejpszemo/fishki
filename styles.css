@@ -53,6 +53,13 @@ div.box {
   margin: 8px;
   text-align: center;
 }
+div.box#container {
+  padding: 0;
+}
+div.box#left, div.box#right {
+  display: inline-block;
+  width: 30%;
+}
 
 h1, h3, p {
   background-color: transparent;

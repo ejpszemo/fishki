@@ -6,8 +6,9 @@ var lastButton = null;
 var x = 0;
 var positiveCounter = 0;
 var comboCounter = 0;
+var comboBest = 0;
 
-const buttonCount = 10;
+const buttonCount = 20;
 const positiveList = ["Great job! 🌟", "Well done! 👍", "Fantastic work! 🎉", "You're on fire! 🔥", "Amazing! 💥", "Perfect! ✅", "Bravo! 👏", "Excellent! 🎉🎉", "You're a pro! 🏅", "Outstanding! 🌈", "¡Buen trabajo! 👏", "¡Increíble! 🌟", "¡Fantástico! 🎉"];
 const negativeList = ["Almost there! Keep going! 💪", "Not quite, but you're close! 🔍", "You're on the right track! Try again. ✨", "So close! A little more effort! 💡", "Good try! Let’s keep working on it! 🌱", "Almost perfect! You can do it! 🌟", "Nice attempt! Don’t give up! 💪", "Almost, just a little tweak! 🔧", "Close, but not quite. Try again! 🔄", "Great effort, but it needs a little adjustment! 🛠️", "¡Casi! ¡Sigue intentándolo! 💪", "¡Muy cerca! Un poco más y lo consigues! 🔍", "¡Buen intento! ¡Ánimo! 🌱"];
 
@@ -68,6 +69,10 @@ function validate(button) {
     else
         negativeAnswer();
 
+    const best = document.getElementById("best");
+    comboBest = Math.max(comboBest, comboCounter);
+    best.textContent = "Your best: " + comboBest;
+
     firstSelectionId = -1;
     lastButton = null;
 }
@@ -81,16 +86,16 @@ function positiveAnswer(button) {
     message.setAttribute("positive", true);
 
     comboCounter++;
-    combo.textContent = "Combo " + comboCounter + "!";
+    combo.textContent = "Combo: " + comboCounter;
 
     button.disabled = true;
     lastButton.disabled = true;
 
     positiveCounter++;
 
-    if (positiveCounter == 5) {
+    if (positiveCounter == (buttonCount / 2)) {
         positiveCounter = 0;
-        x += 5;
+        x += (buttonCount / 2);
         prepareButtons();
         resetButtons();
     }
@@ -101,11 +106,11 @@ function negativeAnswer() {
     message.setAttribute("positive", false);
 
     comboCounter = 0;
-    combo.textContent = "Combo " + comboCounter + "!";
+    combo.textContent = "Combo " + comboCounter;
 }
 
 function resetButtons() {
-    for (var i = 1; i <= 10; i++) {
+    for (var i = 1; i <= buttonCount; i++) {
         const button = document.getElementById(i);
         button.disabled = false;
     }
@@ -185,7 +190,7 @@ function prepareButtons() {
     var espDictToShow = new Array();
     var engDictToShow = new Array();
 
-    for (var i = x; i < x + 5; i++) {
+    for (var i = x; i < x + (buttonCount / 2); i++) {
         espDictToShow.push(espDict[i]);
         engDictToShow.push(engDict[i]);
     }
