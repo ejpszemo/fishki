@@ -147,14 +147,29 @@ function shuffle(array) {
         currentIndex--;
 
         // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
+        [array[currentIndex], array[randomIndex]] =
+            [array[randomIndex], array[currentIndex]];
+    }
+}
+function shufflePairs(firstArray, secondArray) {
+    // shuffles both arrays the same way to contain same 5 translates in one screen
+    let currentIndex = firstArray.length;
+
+    while (currentIndex != 0) {
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        [firstArray[currentIndex], firstArray[randomIndex]] = 
+            [firstArray[randomIndex], firstArray[currentIndex]];
+        [secondArray[currentIndex], secondArray[randomIndex]] =
+            [secondArray[randomIndex], secondArray[currentIndex]];
     }
 }
 
 function setDictionaries(esp, eng) {
     espDict = esp;
     engDict = eng;
+    shufflePairs(espDict, engDict); // make sure it is not same words every time
     prepareButtons();
 }
 
